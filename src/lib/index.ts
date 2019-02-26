@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import 'source-map-support/register';
 import ts from 'typescript';
 import {createProgram, File} from './program';
 import {Visitor, Visitor2} from './visitors';
