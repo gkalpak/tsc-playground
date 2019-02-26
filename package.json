@@ -1,0 +1,50 @@
+{
+  "private": true,
+  "name": "tsc-playground",
+  "version": "1.0.0",
+  "description": "A playground for the TypeScript Compiler (tsc).",
+  "keywords": [
+    "Playground",
+    "Private"
+  ],
+  "main": "out/lib/index.js",
+  "typings": "out/lib/index.d.ts",
+  "scripts": {
+    "prebuild": "run-s clean-out",
+    "build": "run-s ~~build",
+    "prebuild-watch": "run-s prebuild",
+    "build-watch": "run-s ~~build-watch",
+    "clean-out": "node --eval \"require('shelljs').rm('-rf', 'out/');\"",
+    "predev": "run-s build || true",
+    "dev": "run-p ~~build-watch ~~run-watch",
+    "predev-debug": "run-s predev",
+    "dev-debug": "run-p ~~build-watch ~~run-watch-debug",
+    "lint": "tslint --project tsconfig.json",
+    "pretest": "run-s build",
+    "test": "run-s lint && node --print \"require('chalk').red('No tests yet :(\\n')\" && exit 1",
+    "~~build": "tsc --project ./",
+    "~~build-watch": "run-s \"~~build -- --watch\"",
+    "~~run": "node ./",
+    "~~run-debug": "node --inspect-brk ./",
+    "~~run-watch": "watch \"npm run ~~run\" out/ --wait=1",
+    "~~run-watch-debug": "watch \"npm run ~~run-debug\" out/ --wait=1"
+  },
+  "license": "Unlicense",
+  "author": "gkalpak <kalpakas.g@gmail.com>",
+  "homepage": "https://github.com/tsc-playground/aliases#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gkalpak/tsc-playground.git"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "typescript": "^3.3.3333"
+  },
+  "devDependencies": {
+    "@types/node": "^11.9.5",
+    "npm-run-all": "^4.1.5",
+    "shelljs": "^0.8.3",
+    "tslint": "^5.13.0",
+    "watch": "^1.0.2"
+  }
+}
