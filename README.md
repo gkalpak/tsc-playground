@@ -12,5 +12,4 @@ TBD
 
 Things I want to (but won't necessarily) do:
 
-- Set up the project.
 - Write usage instructions in `README.md`.
