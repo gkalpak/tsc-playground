@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import 'source-map-support/register';
 import ts from 'typescript';
 import {createProgram, File} from './program';
-import {Visitor, Visitor2} from './visitors';
+import {Visitor, Visitor3} from './visitors';
 
 
 // Run
@@ -13,21 +13,15 @@ function _main(): void {
   const compilerOptions: ts.CompilerOptions = {types: []};
   const files: File[] = [
     new File('test.ts', `
-      var Foo = (function () {
-        function Foo() {
-          this.bar = 'bar';
-        }
-        Foo.staticBar = function () {};
-        Foo.prototype.getBar = function getBar() {
-          return this.bar;
-        };
-        return Foo;
-      }());
+      declare const exports: any;
+
+      exports.foo = class Foo {};
+      exports['bar'] = class Bar {};
     `),
   ];
 
   const program = createProgram(files, compilerOptions);
-  const visitor = new Visitor2(program);
+  const visitor = new Visitor3(program);
 
   processProgram(program, visitor);
 }
