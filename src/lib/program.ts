@@ -8,9 +8,9 @@ export class File {
   constructor(public readonly fileName: string, public readonly content: string) {
   }
 
-  public getSourceFile(languageVersion: ts.ScriptTarget): ts.SourceFile {
-    if (!this.sourceFile || (this.sourceFile.languageVersion !== languageVersion)) {
-      this.sourceFile = ts.createSourceFile(this.fileName, this.content, languageVersion, true);
+  public getSourceFile(opts: ts.CreateSourceFileOptions): ts.SourceFile {
+    if (!this.sourceFile || (this.sourceFile.languageVersion !== opts.languageVersion)) {
+      this.sourceFile = ts.createSourceFile(this.fileName, this.content, opts, true);
     }
 
     return this.sourceFile;
@@ -21,9 +21,13 @@ export class File {
 export const createProgram = (files: File[], compilerOptions: ts.CompilerOptions = {}): ts.Program => {
   const compilerHost = ts.createCompilerHost(compilerOptions);
 
-  compilerHost.getSourceFile = (fileName, languageVersion) => {
+  compilerHost.getSourceFile = (fileName, languageVersionOrOptions) => {
     const file = files.find(f => f.fileName === fileName);
-    return file && file.getSourceFile(languageVersion);
+    const opts = (typeof languageVersionOrOptions === 'object') ?
+      languageVersionOrOptions :
+      {languageVersion: languageVersionOrOptions};
+
+    return file && file.getSourceFile(opts);
   };
 
   return ts.createProgram(files.map(f => f.fileName), compilerOptions, compilerHost);

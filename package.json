@@ -10,24 +10,24 @@
   "main": "out/lib/index.js",
   "typings": "out/lib/index.d.ts",
   "scripts": {
-    "prebuild": "run-s clean-out",
+    "prebuild": "run-s clean-up",
     "build": "run-s ~~build",
     "prebuild-watch": "run-s prebuild",
     "build-watch": "run-s ~~build-watch",
-    "clean-out": "node --eval \"require('shelljs').rm('-rf', 'out/');\"",
+    "clean-up": "node --eval \"require('shelljs/global'); set('-e'); rm('-rf', 'out/');\"",
     "predev": "run-s build || true",
     "dev": "run-p ~~build-watch ~~run-watch",
     "predev-debug": "run-s predev",
     "dev-debug": "run-p ~~build-watch ~~run-watch-debug",
     "lint": "tslint --project tsconfig.json",
     "pretest": "run-s build",
-    "test": "run-s lint && node --print \"require('chalk').red('No tests yet :(\\n')\" && exit 1",
+    "test": "run-s lint && node --print \"require('chalk').default.red('No tests yet :(\\n')\" && exit 1",
     "~~build": "tsc --project ./",
     "~~build-watch": "run-s \"~~build -- --watch\"",
     "~~run": "node ./",
     "~~run-debug": "node --inspect-brk ./",
-    "~~run-watch": "watch \"npm run ~~run\" out/ --wait=1",
-    "~~run-watch-debug": "watch \"npm run ~~run-debug\" out/ --wait=1"
+    "~~run-watch": "node --watch-path=out/ ./",
+    "~~run-watch-debug": "node --inspect-brk --watch-path=out/ ./"
   },
   "license": "Unlicense",
   "author": "gkalpak <kalpakas.g@gmail.com>",
@@ -37,15 +37,14 @@
     "url": "git+https://github.com/gkalpak/tsc-playground.git"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
-    "source-map-support": "^0.5.20",
-    "typescript": "^4.4.4"
+    "chalk": "^5.6.2",
+    "source-map-support": "^0.5.21",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^16.11.4",
+    "@types/node": "^25.4.0",
     "npm-run-all": "^4.1.5",
-    "shelljs": "^0.8.4",
-    "tslint": "^6.1.3",
-    "watch": "^1.0.2"
+    "shelljs": "^0.10.0",
+    "tslint": "^6.1.3"
   }
 }
